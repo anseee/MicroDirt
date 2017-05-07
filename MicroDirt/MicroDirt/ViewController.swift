@@ -9,39 +9,63 @@
 import UIKit
 import Alamofire
 import SwiftyJSON
+import Kanna
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, XMLParserDelegate {
 
+    var item:[String:String] = [:]
+    var items:[[String:String]] = []
+    var currentElement = ""
+    var elementCount = 0
+    
+    let strURL = "http://openapi.airkorea.or.kr/openapi/services/rest/ArpltnInforInqireSvc/getMinuDustFrcstDspth?serviceKey=\(BaseURL.serviceKey)"
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.requestMicroDirstInfo()
-    }
-
-    // MARK: request apis
-    
-    func requestMicroDirstInfo() {
-        //let encodedServiceKey = BaseURL.serviceKey.utf8
         
-        var params = [String: Any]()
-        params["returnType"] = "json"
-        params["serviceKey"] = BaseURL.serviceKey
-        params["umdName"] = "구월동"
-        params["pageNo"] = NSNumber.init(value: 1)
-        params["numOfRows"] = NSNumber.init(value: 10)
-    
-        Alamofire.request(BaseURL.baseURL,
-                          method: .get,
-                          parameters: params,
-                          encoding: JSONEncoding.default, headers: nil).response {
-                            response in
-                            
-            print(response.request)  // original URL request
-            print(response.response) // HTTP URL response
-            print(response.data)     // server data
+        if let url = URL(string: self.strURL) {
             
+            if let parser = XMLParser(contentsOf: url) {
+                parser.delegate = self
+                
+                if parser.parse() {
+                    print(self.items)
+                }
+                
+            } else {
+                print("parser fail")
+            }
+            
+        } else {
+            print("URL error")
         }
-
     }
+    
+    func parser(_ parser: XMLParser, didStartElement elementName: String, namespaceURI: String?, qualifiedName qName: String?, attributes attributeDict: [String : String] = [:]) {
+        
+        currentElement = elementName
+        //print("currentElement = \(currentElement)")
+        
+        if elementName == "items" {
+            items = []
+        } else if elementName == "item" {
+            item = [:]
+        }
+        
+    }
+    
+    func parser(_ parser: XMLParser, foundCharacters string: String) {
 
+        let data = string.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
+        item[currentElement] = data
+    }
+    
+    func parser(_ parser: XMLParser, didEndElement elementName: String, namespaceURI: String?, qualifiedName qName: String?) {
+        if elementName == "item" {
+            items.append(item)
+            elementCount += elementCount
+        }
+    }
+    
 }
 

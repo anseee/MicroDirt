@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "E7C3A7AE916A4D6FA0002440E7DE8B26"
+               BlueprintIdentifier = "598A624EE7AB51F2229D41DBCB59DD6B"
                BuildableName = "Pods_MicroDirt.framework"
                BlueprintName = "Pods-MicroDirt"
                ReferencedContainer = "container:Pods.xcodeproj">
@@ -45,7 +45,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "E7C3A7AE916A4D6FA0002440E7DE8B26"
+            BlueprintIdentifier = "598A624EE7AB51F2229D41DBCB59DD6B"
             BuildableName = "Pods_MicroDirt.framework"
             BlueprintName = "Pods-MicroDirt"
             ReferencedContainer = "container:Pods.xcodeproj">
